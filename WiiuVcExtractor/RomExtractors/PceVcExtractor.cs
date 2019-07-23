@@ -57,6 +57,17 @@ namespace WiiuVcExtractor.RomExtractors
                     {
                         Console.WriteLine("Extracting {0}...", contentFile.Path);
                     }
+
+                    if (Path.GetExtension(contentFile.Path).ToLower() == ".bin")
+                    {
+                        // decompress the .bin file prior to writing
+                        if (verbose)
+                        {
+                            Console.WriteLine("Decompressing {0} prior to write...", contentFile.Path);
+                        }
+                        contentFile.Decompress();
+                    }
+
                     contentFile.Write();
                 }
 

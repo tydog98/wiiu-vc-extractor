@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.IO.Compression;
 
 namespace WiiuVcExtractor.FileTypes
 {
@@ -38,6 +39,29 @@ namespace WiiuVcExtractor.FileTypes
                 Console.WriteLine("Writing content file {0} to {1}", path, writePath);
                 bw.Write(content);
             }
+        }
+
+        public void Decompress()
+        {
+            // TODO: Make this actually functional
+
+            // Attempt to decompress the content
+            byte[] decompressedData;
+
+            using (MemoryStream compressedStream = new MemoryStream(content))
+            {
+                using (DeflateStream deflateStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
+                {
+                    using (MemoryStream decompressedStream = new MemoryStream())
+                    {
+                        deflateStream.CopyTo(decompressedStream);
+                        decompressedData = decompressedStream.ToArray();
+                    }
+                }
+            }
+
+            // Write all of the decompressed data to the decompressedPath
+            content = decompressedData;
         }
     }
 }
